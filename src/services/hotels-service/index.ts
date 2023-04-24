@@ -1,4 +1,4 @@
-import { notFoundError, paymentRequired } from '@/errors';
+import { notFoundError, paymentRequiredError } from '@/errors';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import ticketsRepository from '@/repositories/tickets-repository';
 import hotelsRepository from '@/repositories/hotels-repository';
@@ -12,8 +12,9 @@ async function verifyTicketAndEnrollment(userId: number) {
 
   if (!ticket) throw notFoundError();
 
-  if (ticket.status === 'RESERVED' || ticket.TicketType.isRemote === true || ticket.TicketType.includesHotel === false)
-    throw paymentRequired();
+  if (!ticket.TicketType.includesHotel || ticket.status === 'RESERVED' || ticket.TicketType.isRemote) {
+    throw paymentRequiredError();
+  }
 }
 async function getAllHotels(userId: number) {
   await verifyTicketAndEnrollment(userId);
