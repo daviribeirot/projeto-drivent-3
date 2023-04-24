@@ -10,13 +10,17 @@ async function verifyTicketAndEnrollment(userId: number) {
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
 
-  if (!ticket || ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel)
+  if (!ticket) throw notFoundError();
+
+  if (ticket.status === 'RESERVED' || ticket.TicketType.isRemote === true || ticket.TicketType.includesHotel === false)
     throw paymentRequired();
 }
 async function getAllHotels(userId: number) {
   await verifyTicketAndEnrollment(userId);
 
   const hotels = await hotelsRepository.getAllHotels();
+
+  if (!hotels) throw notFoundError();
 
   return hotels;
 }

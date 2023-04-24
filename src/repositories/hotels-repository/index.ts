@@ -17,9 +17,9 @@ async function getHotelByHotelId(hotelId: number) {
   return hotel;
 }
 
-const hotelRepository = {
+const hotelsRepository = {
   getAllHotels,
   getHotelByHotelId,
 };
 
-export default hotelRepository;
+export default hotelsRepository;
