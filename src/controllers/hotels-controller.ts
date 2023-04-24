@@ -9,7 +9,7 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
   try {
     const hotels = await hotelsService.getAllHotels(userId);
 
-    if (!hotels) return res.sendStatus(httpStatus.NOT_FOUND);
+    if (!hotels) return res.sendStatus(httpStatus.BAD_REQUEST);
 
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
